@@ -12,11 +12,13 @@ import { Image,
         View, 
         TouchableOpacity } from 'react-native';
 import { styles } from './QrScanStyle';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import { RNCamera } from 'react-native-camera';
 
 
 export default function QrScan(): JSX.Element {
     const navigation = useNavigation();
-
+cd
     const onSuccess = (e:any) => {
         const check = e.data.substring(0, 4);
         console.log('scanned data' + check);
@@ -29,6 +31,10 @@ export default function QrScan(): JSX.Element {
             </View>
             <View style={styles.contentContainer}>
                 <Text>QrScan</Text>
+                <QRCodeScanner
+                    onRead={onSuccess}
+                    flashMode={RNCamera.Constants.FlashMode.torch}
+                />
             </View>
         </SafeAreaView>
     )
