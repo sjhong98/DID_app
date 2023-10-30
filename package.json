@@ -35,5 +35,13 @@
   "devDependencies": {
     "@babel/core": "^7.20.0"
   },
+  "resolutions": {
+    "react-native-permissions": "^3.8.0"
+  },
+  "overrides": {
+    "react-native-qrcode-scanner": {
+      "react-native-permissions": "^3.8.0"
+    }
+  },
   "private": true
 }
