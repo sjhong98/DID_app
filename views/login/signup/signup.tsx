@@ -53,7 +53,7 @@ export default function SignUp(): JSX.Element {
             setMsg("");
             setIsLoading(true);
 
-            axios.post('http://172.30.1.75:5001/user/signup', userInfo)
+            axios.post('https://api.dmrs.space:5001/user/signup', userInfo)
                 .then(res => {
                     console.log("\n===== 회원가입 =====\n", res);
                     console.log("\n===== JWT 생성 완료 ===== \n", res.data.jwt);
