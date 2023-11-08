@@ -1,3 +1,4 @@
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -272,13 +273,41 @@ export default function MedicalRecords(): JSX.Element {
     const navigation = useNavigation();
     const [isView, setIsView] = useState(false);
     const [info, setInfo] = useState({});
+    const [patientList, setPatientList] = useState([]);
+    const [jwt, setJwt] = useState("");
 
-    function press(item) {
+    function press(item:any) {
         console.log("\n\n===== ITEM =====\n\n", item);
         
         setIsView(true);
         setInfo(item);
     }
+
+    useEffect(() => {
+        AsyncStorage.getItem('jwt').then(
+            res => setJwt(res)
+        )
+    })
+
+    useEffect(() => {
+        if (jwt) {
+  
+          console.log("doctor jwt : ", jwt);
+          if(jwt != null)
+          {
+              axios.post(`https://api.dmrs.space:5001/doctor/get-patients-list`,   // 환자 목록 가져오기
+                  { doctorJwt: jwt }
+                  )   
+                  .then((res) => {
+                      console.log(res);
+                      setPatientList(res.data);
+                  })
+                  .catch((err) => {
+                      console.log(err);
+                  })
+          }
+       } 
+      }, [jwt]);
 
 
 
