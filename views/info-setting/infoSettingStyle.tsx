@@ -37,5 +37,27 @@ export const styles = StyleSheet.create({
 
     switch: {
         marginRight: 40
+    },
+
+    saveBtnContainer: {
+        flex: 0.2,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    saveBtn: {
+        width: 300,
+        height: 80,
+        borderRadius: 20,
+        backgroundColor: 'blue',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    saveBtnFont: {
+        color: 'white',
+        fontSize: 30,
     }
 })

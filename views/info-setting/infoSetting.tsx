@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function InfoSetting(): JSX.Element {
+    const navigation = useNavigation();
     const [infos, setInfos] = useState([{title:'이름', isEnable: true}, {title:'생년월일', isEnable: true}, {title:'진료기록', isEnable: true} ])
 
     const toggleSwitch = (res:any) => {
@@ -41,6 +42,14 @@ export default function InfoSetting(): JSX.Element {
                 })}
 
             </ScrollView>
+            <View style={styles.saveBtnContainer}>
+                <TouchableOpacity 
+                    style={styles.saveBtn}
+                    onPress={() => {navigation.navigate('QrView')}}
+                >
+                    <Text style={styles.saveBtnFont}>저장</Text>
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     )
 }
