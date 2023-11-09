@@ -18,15 +18,16 @@ export default function QrScan(): JSX.Element {
     });
 
     useEffect(() => {
-        // AsyncStorage.getItem('email')
-        // .then(res => {
-        //     socket.emit('login', email);
-        // })
         socket.emit('login', {email: "test", media: "mobile"});
     }, [])
 
     const onSuccess = (e:any) => {
-        socket.emit('qr-atos', {email: "test", jwt: "jwtTest"})
+        const test = "test 홍승재 eyJhbGciOiJFUzI1NkstUiIsInR5cCI6IkpXVCJ9.eyJ2YyI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSJdLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIl0sImNyZWRlbnRpYWxTdWJqZWN0Ijp7Imlzc3VlciI6eyJuYW1lIjoiTWVkaWNhbCBSZWNvcmQgTWFuYWdlbWVudCBBc3NvY2lhdGlvbiIsImFkZHJlc3MiOiIweDNGZTdEQjQ3MDcyMDBlY0RlN2Q0Nzg4YjgwNWYyMjU2RTNiQzQ4NjcifSwidXNlckluZm8iOnsibmFtZSI6IiIsImVtYWlsIjoiIiwiYmlydGhkYXkiOiIiLCJwaG9uZU51bWJlciI6IiIsImlzRG9jdG9yIjpmYWxzZSwiYWRkcmVzcyI6IjB4NjFkNDc4MzA2YWU1Rjk1NmI2RWJGNTQzMzUxRDU3ODQ5MzhEMjExRSJ9LCJtZWRpY2FsUmVjb3JkcyI6IjRmNTNjZGExOGMyYmFhMGMwMzU0YmI1ZjlhM2VjYmU1ZWQxMmFiNGQ4ZTExYmE4NzNjMmYxMTE2MTIwMmI5NDUiLCJkb2N0b3JMaWNlbnNlIjpmYWxzZX19LCJzdWIiOnsiZGlkIjoiZGlkOmV0aHI6Z29lcmxpOjB4NjFkNDc4MzA2YWU1Rjk1NmI2RWJGNTQzMzUxRDU3ODQ5MzhEMjExRSIsImFkZHJlc3MiOiIweDYxZDQ3ODMwNmFlNUY5NTZiNkViRjU0MzM1MUQ1Nzg0OTM4RDIxMUUifSwiaXNzIjoiZGlkOmV0aHI6Z29lcmxpOjB4RTk0QTM2RjBENDFjNDhGZDZkMjQyRGY2QzhEZDgyQzI1NzU4YkE4MSJ9.GNZ6AUQoSdBkblvmDSgVazLenlhDjfX3LhCG3ikpI14grsOe3-yYyjUkyaxHAKOVezwo7ZDhck61Znc2WdqblgE"
+        const splittedData = test.split(" ");
+        socket.emit('qr-atos', {
+                email: splittedData[0], 
+                name: splittedData[1],
+                jwt: splittedData[2]})
     }
 
     return (

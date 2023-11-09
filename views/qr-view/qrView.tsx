@@ -9,7 +9,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 export default function QrView(): JSX.Element {
-    const [jwt, setJwt] = useState(".");
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [jwt, setJwt] = useState("");
+    const [qr, setQr] = useState("");
     const [timer, setTimer] = useState(15);
     const navigation = useNavigation();
     const Tab = createBottomTabNavigator();
@@ -20,6 +23,18 @@ export default function QrView(): JSX.Element {
             if(res !== null)
                 setJwt(res);
         })
+        AsyncStorage.getItem("name")
+        .then(res => {
+            if(res !== null)
+                setName(res);
+        })
+        AsyncStorage.getItem("email")
+        .then(res => {
+            if(res !== null)
+                setEmail(res);
+        })
+        const temp = jwt + " " + name + " " + email;
+        setQr(temp);
     }, [])
 
     useEffect(() => {
@@ -49,7 +64,7 @@ export default function QrView(): JSX.Element {
             
                 <Text style={styles.timer} >{timer}초 남았습니다</Text>
                 <QRCode
-                    value={jwt}
+                    value={qr}
                     size={150}
                 />
             </View>
