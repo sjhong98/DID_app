@@ -273,7 +273,8 @@ export default function MedicalRecords(): JSX.Element {
     const navigation = useNavigation();
     const [isView, setIsView] = useState(false);
     const [info, setInfo] = useState({});
-    const [patientList, setPatientList] = useState([]);
+    const [records, setRecords] = useState([]);
+    const [isEmpty, setIsEmpty] = useState(true);
     const [jwt, setJwt] = useState("");
 
     function press(item:any) {
@@ -289,25 +290,15 @@ export default function MedicalRecords(): JSX.Element {
         )
     })
 
-    useEffect(() => {
-        if (jwt) {
-  
-          console.log("doctor jwt : ", jwt);
-          if(jwt != null)
-          {
-              axios.post(`https://api.dmrs.space:5001/doctor/get-patients-list`,   // 환자 목록 가져오기
-                  { doctorJwt: jwt }
-                  )   
-                  .then((res) => {
-                      console.log(res);
-                      setPatientList(res.data);
-                  })
-                  .catch((err) => {
-                      console.log(err);
-                  })
-          }
-       } 
-      }, [jwt]);
+    async function getDb() {
+        const _records = await axios.post(`https://api.dmrs.space:5001/user/get-my-record`, 
+            { vcJwt: jwt }
+        )
+        setRecords(_records.data);
+        console.log("records : ", records, records.length);
+        if(records.length === 0)
+            setIsEmpty(true);
+    }
 
 
 
@@ -373,9 +364,10 @@ export default function MedicalRecords(): JSX.Element {
                         <Text style={styles.indexText}>진료의사</Text>
                     </View>
                     <ScrollView style={styles.listContainer}>
-                        { medicalList.map((item, index) => {
+                        { records.map((item, index) => {
                             return (
                                 <TouchableOpacity
+                                    key={index}
                                     onPress={() => press(item)}
                                 >
                                     <View style={styles.list} >

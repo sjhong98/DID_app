@@ -29,7 +29,15 @@ export const styles = StyleSheet.create({
     
     arrowBack: {
         marginLeft: 10,
-        top: -40,
+        top: -45,
         position: "absolute"
-    }
+    },
+
+    setting: {
+        flex: 1.5,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 })

@@ -52,15 +52,16 @@ export default function Login(): JSX.Element {
                     navigation.navigate("SignUp");
                 } else {                // 기존회원일때
                     console.log("===== 기존 회원 =====\n", res.data.dbData);
-                    AsyncStorage.setItem("email",res.data.dbData.email);
-                    if(res.data.dbData.isDoctor)
-                        AsyncStorage.setItem("isDoctor", "true");
-                    else    
-                        AsyncStorage.setItem("isDoctor", "false");
-                        AsyncStorage.setItem("login", "true");
-                        AsyncStorage.setItem("name", res.data.dbData.name);
-                        AsyncStorage.setItem("birthday", res.data.dbData.birthday);
-                        navigation.navigate('MainScreen', { screen: 'Lobby' });
+                    // AsyncStorage.setItem("email",res.data.dbData.email); 
+                    // AsyncStorage.setItem("login", "true");
+                    // AsyncStorage.setItem("name", res.data.dbData.name);
+                    // AsyncStorage.setItem("birthday", res.data.dbData.birthday);
+                    AsyncStorage.setItem("email", "test@test.com"); 
+                    AsyncStorage.setItem("login", "true");
+                    AsyncStorage.setItem("name", "test");
+                    AsyncStorage.setItem("birthday", "980901");
+                    navigation.navigate('MainScreen', { screen: 'Lobby' });
+                    // navigation.navigate("SignUp");
                 }
             }).catch(err => {
                 console.log(err);

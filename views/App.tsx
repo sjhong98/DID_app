@@ -33,6 +33,7 @@ import SignUp from './login/signup/signup';
 import QrView from './qr-view/qrView';
 import MedicalRecords from './medical-records/medicalRecords';
 import MainScreen from './mainScreen';
+import InfoSetting from './info-setting/infoSetting';
 
 
 
@@ -49,6 +50,7 @@ function App(): JSX.Element {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="QrView" component={QrView} />
+        <Stack.Screen name="InfoSetting" component={InfoSetting} />
       </Stack.Navigator>
     </NavigationContainer>
     
