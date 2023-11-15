@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, Text, View, TouchableOpacity} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -9,32 +10,42 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 export default function QrView(): JSX.Element {
-    const [email, setEmail] = useState("");
-    const [name, setName] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [name, setName] = useState("");
     const [jwt, setJwt] = useState("");
-    const [qr, setQr] = useState("");
+    const [qr, setQr] = useState("LOADING");
     const [timer, setTimer] = useState(15);
     const navigation = useNavigation();
     const Tab = createBottomTabNavigator();
 
+    // http://api.dmrs.space:5003/qr/link
+
     useEffect(() => {
+        AsyncStorage.setItem("jwt", "TEST");
         AsyncStorage.getItem("jwt")
         .then(res => {
-            if(res !== null)
-                setJwt(res);
+            setJwt(res);
         })
-        AsyncStorage.getItem("name")
+        // AsyncStorage.getItem("name")
+        // .then(res => {
+        //     if(res !== null)
+        //         setName(res);
+        // })
+        // AsyncStorage.getItem("email")
+        // .then(res => {
+        //     if(res !== null)
+        //         setEmail(res);
+        // })
+        // const temp = jwt + " " + name + " " + email;
+        
+        axios.post("https://api.dmrs.space:5003/qr/link", {jwt:jwt})
         .then(res => {
-            if(res !== null)
-                setName(res);
+            setQr(res.data.link);
+
         })
-        AsyncStorage.getItem("email")
-        .then(res => {
-            if(res !== null)
-                setEmail(res);
+        .catch(err => {
+            console.log(err);
         })
-        const temp = jwt + " " + name + " " + email;
-        setQr(temp);
     }, [])
 
     useEffect(() => {
