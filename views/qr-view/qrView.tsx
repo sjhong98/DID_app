@@ -26,7 +26,7 @@ export default function QrView(): JSX.Element {
         .then(res => {
             setJwt(res);
         })
-        // AsyncStorage.getItem("name")
+        // AsyncStㄴorage.getItem("name")
         // .then(res => {
         //     if(res !== null)
         //         setName(res);
@@ -38,10 +38,10 @@ export default function QrView(): JSX.Element {
         // })
         // const temp = jwt + " " + name + " " + email;
         
-        axios.post("https://api.dmrs.space:5003/qr/link", {jwt:jwt})
+        axios.post("https://api.dmrs.space:5003/qr/link", {jwt:"다음 테스트"})
         .then(res => {
+            console.log(res.data.link);
             setQr(res.data.link);
-
         })
         .catch(err => {
             console.log(err);
