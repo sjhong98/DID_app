@@ -28,33 +28,34 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator} from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from './login/login';
-import Lobby from './lobby/lobby';
 import SignUp from './login/signup/signup';
 import QrView from './qr-view/qrView';
-import MedicalRecords from './medical-records/medicalRecords';
 import MainScreen from './mainScreen';
 import InfoSetting from './info-setting/infoSetting';
-
-
-
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import reducer from '../redux/reducers';
+const store = createStore(reducer);
 
 function App(): JSX.Element {
 
-  const Tab = createBottomTabNavigator();
   const Stack = createNativeStackNavigator();
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown: false,}}>
-        <Stack.Screen name="MainScreen" component={MainScreen} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="QrView" component={QrView} />
-        <Stack.Screen name="InfoSetting" component={InfoSetting} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store} >
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown: false,}}>
+          <Stack.Screen name="MainScreen" component={MainScreen} />
+          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="QrView" component={QrView} />
+          <Stack.Screen name="InfoSetting" component={InfoSetting} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
     
   );
 }
 
 export default App;
+export type RootState = ReturnType<typeof store.getState>;

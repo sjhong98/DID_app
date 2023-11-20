@@ -6,10 +6,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './infoSettingStyle';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useSelector } from 'react-redux';
+import { RootState } from '../App';
 
 export default function InfoSetting(): JSX.Element {
     const navigation = useNavigation();
-    const [infos, setInfos] = useState([{title:'이름', isEnable: true}, {title:'생년월일', isEnable: true}, {title:'진료기록', isEnable: true} ])
+    const tempInfo = useSelector((state:RootState) => state.infosSetting);
+    const [infos, setInfos] = useState([]);
 
     const toggleSwitch = (res:any) => {
         const temp = [...infos];
@@ -18,13 +21,18 @@ export default function InfoSetting(): JSX.Element {
         setInfos(temp);
     }
 
+    useEffect(() => {
+        setInfos(tempInfo);
+        console.log(tempInfo);
+    }, [tempInfo]);
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>정보 제공 설정</Text>
             </View>
             <ScrollView style={styles.body}>
-                {infos.map((item, index) => {
+                { infos ? infos.map((item, index) => {
                     return(
                         <View key={index} style={styles.checkBox}>
                             <Text style={styles.infoText}>{item.title}</Text>
@@ -36,10 +44,10 @@ export default function InfoSetting(): JSX.Element {
                                 onValueChange={() => {toggleSwitch(item.title)}}
                                 value={item.isEnable}
                             />
-                            
                         </View>
                     )
-                })}
+                }) : <Text>Loading</Text>
+                }
 
             </ScrollView>
             <View style={styles.saveBtnContainer}>
@@ -49,6 +57,11 @@ export default function InfoSetting(): JSX.Element {
                 >
                     <Text style={styles.saveBtnFont}>저장</Text>
                 </TouchableOpacity>
+                {/* <TouchableOpacity
+                    onPress={handleInit}
+                >
+                    <Text>InitAsyncStorage</Text>
+                </TouchableOpacity> */}
             </View>
         </SafeAreaView>
     )

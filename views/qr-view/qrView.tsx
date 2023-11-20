@@ -7,37 +7,40 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './qrViewStyle';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { useDispatch } from 'react-redux';
+import { setInfosSetting } from '../../redux/actions';
 
 export default function QrView(): JSX.Element {
-    // const [email, setEmail] = useState("");
-    // const [name, setName] = useState("");
     const [jwt, setJwt] = useState("");
     const [qr, setQr] = useState("LOADING");
     const [timer, setTimer] = useState(15);
     const navigation = useNavigation();
     const Tab = createBottomTabNavigator();
+    const dispatch = useDispatch();
+    const [infos, setInfos] = useState([
+        {title:'서울병원', isEnable: null, store: "seoul"}, 
+        {title:'인천병원', isEnable: null, store: "incheon"}, 
+        {title:'경기병원', isEnable: null, store: "gyeonggi"},
+        {title:'충남병원', isEnable: null, store: "chungnam"},
+        {title:'부산병원', isEnable: null, store: "busan"},
+    ])
 
     // http://api.dmrs.space:5003/qr/link
 
-    useEffect(() => {
-        AsyncStorage.setItem("jwt", "TEST");
-        AsyncStorage.getItem("jwt")
-        .then(res => {
-            setJwt(res);
-        })
-        // AsyncStㄴorage.getItem("name")
-        // .then(res => {
-        //     if(res !== null)
-        //         setName(res);
-        // })
-        // AsyncStorage.getItem("email")
-        // .then(res => {
-        //     if(res !== null)
-        //         setEmail(res);
-        // })
-        // const temp = jwt + " " + name + " " + email;
-        
+    const handleInit = () => {
+        /////
+        AsyncStorage.setItem(`${infos[0].store}`, JSON.stringify(false));
+        for(let i=1; i<4; i++) {
+            AsyncStorage.setItem(`${infos[i].store}`, JSON.stringify(true));
+        }
+        AsyncStorage.setItem(`${infos[4].store}`, JSON.stringify(false));
+        /////
+    }
+
+    useEffect(() => {   // infos 업뎃 뒤에 axios
+        console.log("=====VIEW=====", infos);
+        dispatch(setInfosSetting(infos));
+
         axios.post("https://api.dmrs.space:5003/qr/link", {jwt:"다음 테스트"})
         .then(res => {
             console.log(res.data.link);
@@ -46,6 +49,21 @@ export default function QrView(): JSX.Element {
         .catch(err => {
             console.log(err);
         })
+    }, [infos])
+
+    useEffect(() => {
+        const fetchData = async () => {     // AsyncStorage 동기방식 작동
+            let temp = [...infos];
+
+            for(let i=0; i<5; i++) {
+                await AsyncStorage.getItem(temp[i].store)
+                .then(res => {
+                    temp[i].isEnable = JSON.parse(res);
+                })
+            }
+            setInfos(temp);
+        }
+        fetchData();
     }, [])
 
     useEffect(() => {
@@ -55,7 +73,7 @@ export default function QrView(): JSX.Element {
 
         // setTimeout(() => {
         //     navigation.navigate("MainScreen", { screen: 'Lobby' });
-        // }, 15000);
+        // }, 15000);       // 시간 지나면 리다이렉트
     }, []);
 
     return (
@@ -90,6 +108,10 @@ export default function QrView(): JSX.Element {
                     color="black" 
                 />
                 <Text>정보 제공 설정</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+            onPress={handleInit}>
+                <Text>INIT</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
