@@ -14,10 +14,12 @@ export default function InfoSetting(): JSX.Element {
     const tempInfo = useSelector((state:RootState) => state.infosSetting);
     const [infos, setInfos] = useState([]);
 
-    const toggleSwitch = (res:any) => {
+    const toggleSwitch = (res:String, store:String) => {
         const temp = [...infos];
         const finding = temp.find((item => res===item.title));
         finding.isEnable = !finding.isEnable;
+        AsyncStorage.setItem(`${store}`, JSON.stringify(finding.isEnable));
+        console.log("AsyncStorage에 저장 : ", store, finding.isEnable);
         setInfos(temp);
     }
 
@@ -41,7 +43,7 @@ export default function InfoSetting(): JSX.Element {
                                 trackColor={{false: '#FFFFFF', true: '#3283E5'}}
                                 thumbColor={'white'}
                                 ios_backgroundColor="#CCC"
-                                onValueChange={() => {toggleSwitch(item.title)}}
+                                onValueChange={() => {toggleSwitch(item.title, item.store)}}
                                 value={item.isEnable}
                             />
                         </View>
