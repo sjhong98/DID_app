@@ -49,7 +49,8 @@ export default function Lobby(): JSX.Element {
         for(let i=0; i<infos.length; i++) {
             AsyncStorage.getItem(`${infos[i].store}`)
             .then(res => {
-                if(res){
+                if(JSON.parse(res)){
+                    console.log(infos[i].title)
                     axios.post('https://api.dmrs.space:5001/user/issue/vc', {
                         did: did,  
                         hospital: `${infos[i].title}`
@@ -68,11 +69,13 @@ export default function Lobby(): JSX.Element {
     }, [infos, did])
 
     useEffect(() => {
+        console.log("===== issue/vp =====", vcs);
         axios.post('https://api.dmrs.space:5001/user/issue/vp', {
             vcJwts: vcs
         })
         .then(res => {
-
+            console.log(res);
+            dispatch(setJwt(res.data));  // 수정 필요
         })
     }, [vcs]);
 

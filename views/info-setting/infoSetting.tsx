@@ -24,7 +24,7 @@ export default function InfoSetting(): JSX.Element {
 
     useEffect(() => {
         setInfos(tempInfo);
-        console.log(tempInfo);
+        console.log("at infoSetting : ", tempInfo);
     }, [tempInfo]);
 
     const handleSave = () => {
