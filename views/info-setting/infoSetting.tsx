@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, Text, View, TouchableOpacity, Switch, ScrollView} from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import QRCode from 'react-native-qrcode-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './infoSettingStyle';
 import { useNavigation } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
 import { setInfosSetting } from '../../redux/actions';
 import { RootState } from '../App';
@@ -22,8 +19,6 @@ export default function InfoSetting(): JSX.Element {
         const finding = temp.find((item => res===item.title));
         finding.isEnable = !finding.isEnable;
         AsyncStorage.setItem(`${store}`, JSON.stringify(finding.isEnable));
-        console.log("AsyncStorage에 저장 : ", store, finding.isEnable);
-        dispatch(setInfosSetting(temp));
         setInfos(temp);
     }
 
@@ -31,6 +26,11 @@ export default function InfoSetting(): JSX.Element {
         setInfos(tempInfo);
         console.log(tempInfo);
     }, [tempInfo]);
+
+    const handleSave = () => {
+        dispatch(setInfosSetting(infos));
+        navigation.navigate('QrView')
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -69,7 +69,7 @@ export default function InfoSetting(): JSX.Element {
             <View style={styles.saveBtnContainer}>
                 <TouchableOpacity 
                     style={styles.saveBtn}
-                    onPress={() => {navigation.navigate('QrView')}}
+                    onPress={handleSave}
                 >
                     <Text style={styles.saveBtnFont}>저장</Text>
                 </TouchableOpacity>
