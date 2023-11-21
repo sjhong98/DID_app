@@ -7,10 +7,13 @@ import { styles } from './infoSettingStyle';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
+import { setInfosSetting } from '../../redux/actions';
 import { RootState } from '../App';
+import { useDispatch } from 'react-redux';
 
 export default function InfoSetting(): JSX.Element {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     const tempInfo = useSelector((state:RootState) => state.infosSetting);
     const [infos, setInfos] = useState([]);
 
@@ -20,6 +23,7 @@ export default function InfoSetting(): JSX.Element {
         finding.isEnable = !finding.isEnable;
         AsyncStorage.setItem(`${store}`, JSON.stringify(finding.isEnable));
         console.log("AsyncStorage에 저장 : ", store, finding.isEnable);
+        dispatch(setInfosSetting(temp));
         setInfos(temp);
     }
 
@@ -34,6 +38,16 @@ export default function InfoSetting(): JSX.Element {
                 <Text style={styles.headerTitle}>정보 제공 설정</Text>
             </View>
             <ScrollView style={styles.body}>
+                <View style={styles.checkBox}>
+                    <Text style={styles.infoText}>신원정보</Text>
+                    <Switch
+                        style={styles.switch}
+                        trackColor={{false: '#FFFFFF', true: '#3283E5'}}
+                        thumbColor={'white'}
+                        ios_backgroundColor="#CCC"
+                        value={true}
+                    />
+                </View>
                 { infos ? infos.map((item, index) => {
                     return(
                         <View key={index} style={styles.checkBox}>

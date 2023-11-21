@@ -1,22 +1,22 @@
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
-import { Image, 
-        SafeAreaView, 
-        ScrollView, 
-        StatusBar, 
-        StyleSheet, 
-        Text, 
-        useColorScheme, 
+import { SafeAreaView, 
+        Text,  
         View, 
         TouchableOpacity } from 'react-native';
 import { styles } from './lobbyStyle';
-import BottomTabs from '../../modules/bottomTabs.tsx/bottomTabs';
+import { useSelector } from 'react-redux';
+import { RootState } from '../App';
 
 
 export default function Lobby(): JSX.Element {
     const [name, setName] = useState("");
     const [bir, setBir] = useState("");
+    const [patientDid, setPatientDid] = useState("");
+    const [vcs, setVcs] = useState([]);
+    const infos = useSelector((state:RootState) => state.infosSetting);
     const navigation = useNavigation();
 
     const qr = () => {
@@ -34,7 +34,30 @@ export default function Lobby(): JSX.Element {
             if(res !== null)
                 setBir(res);
         })
+
+
     }, [])
+
+    useEffect(() => {
+        for(let i=0; i<infos.length; i++) {
+            AsyncStorage.getItem(`${infos[i].store}`)
+            .then(res => {
+                if(res)
+                    axios.post('https://api.dmrs.space:5001/user/issue/vc', {
+                        did: patientDid,    // 로그인 시 did 정보 가져와야 함
+                        hospital: `${infos[i].title}`
+                    })
+                    .then(res => {
+                        let temp = [...vcs];
+                        temp.push(res.data);     // 수정 필요
+                        setVcs(temp);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            })
+        }
+    }, [infos])
 
     return (
         <SafeAreaView style={styles.container}> 

@@ -27,18 +27,8 @@ export default function QrView(): JSX.Element {
 
     // http://api.dmrs.space:5003/qr/link
 
-    const handleInit = () => {
-        /////
-        AsyncStorage.setItem(`${infos[0].store}`, JSON.stringify(false));
-        for(let i=1; i<4; i++) {
-            AsyncStorage.setItem(`${infos[i].store}`, JSON.stringify(true));
-        }
-        AsyncStorage.setItem(`${infos[4].store}`, JSON.stringify(false));
-        /////
-    }
 
     useEffect(() => {   // infos 업뎃 뒤에 axios
-        console.log("=====VIEW=====\n", infos);
         dispatch(setInfosSetting(infos));
 
         axios.post("https://api.dmrs.space:5003/qr/link", {jwt:"다음 테스트"})
@@ -108,10 +98,6 @@ export default function QrView(): JSX.Element {
                     color="black" 
                 />
                 <Text>정보 제공 설정</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            onPress={handleInit}>
-                <Text>INIT</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
