@@ -7,8 +7,9 @@ import { SafeAreaView,
         View, 
         TouchableOpacity } from 'react-native';
 import { styles } from './lobbyStyle';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../App';
+import { setJwt } from '../../redux/actions';
 
 
 export default function Lobby(): JSX.Element {
@@ -16,8 +17,10 @@ export default function Lobby(): JSX.Element {
     const [bir, setBir] = useState("");
     const [patientDid, setPatientDid] = useState("");
     const [vcs, setVcs] = useState([]);
+    const [did, setDid] = useState({});
     const infos = useSelector((state:RootState) => state.infosSetting);
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     const qr = () => {
         navigation.navigate("QrView");
@@ -34,30 +37,44 @@ export default function Lobby(): JSX.Element {
             if(res !== null)
                 setBir(res);
         })
-
-
+        AsyncStorage.getItem("did")
+        .then(res => {
+            setDid(res);
+        })
     }, [])
 
     useEffect(() => {
+        let temp = [...vcs];
+        console.log("===== issue/vc =====");
         for(let i=0; i<infos.length; i++) {
             AsyncStorage.getItem(`${infos[i].store}`)
             .then(res => {
-                if(res)
+                if(res){
                     axios.post('https://api.dmrs.space:5001/user/issue/vc', {
-                        did: patientDid,    // 로그인 시 did 정보 가져와야 함
+                        did: did,  
                         hospital: `${infos[i].title}`
                     })
                     .then(res => {
-                        let temp = [...vcs];
+                        console.log(res);
                         temp.push(res.data);     // 수정 필요
-                        setVcs(temp);
                     })
                     .catch(err => {
                         console.log(err);
                     })
+                }
             })
         }
-    }, [infos])
+        setVcs(temp);
+    }, [infos, did])
+
+    useEffect(() => {
+        axios.post('https://api.dmrs.space:5001/user/issue/vp', {
+            vcJwts: vcs
+        })
+        .then(res => {
+
+        })
+    }, [vcs]);
 
     return (
         <SafeAreaView style={styles.container}> 

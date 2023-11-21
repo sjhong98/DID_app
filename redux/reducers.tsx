@@ -1,5 +1,6 @@
 const initialState = {
     infosSetting: [],
+    jwt: "",
 }
 
 const dataReducer = (state = initialState, action:any) => {
@@ -9,6 +10,12 @@ const dataReducer = (state = initialState, action:any) => {
             return {
                 ...state,
                 infosSetting: action.payload,
+            }
+
+        case 'SET_JWT' :
+            return {
+                ...state,
+                jwt: action.payload,
             }
 
         default :

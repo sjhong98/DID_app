@@ -60,6 +60,7 @@ export default function Login(): JSX.Element {
                     AsyncStorage.setItem("login", "true");
                     AsyncStorage.setItem("name", "test");
                     AsyncStorage.setItem("birthday", "980901");
+                    AsyncStorage.setItem("did", res.data.dbData.did);
                     navigation.navigate('MainScreen', { screen: 'Lobby' });
                     // navigation.navigate("SignUp");
                 }

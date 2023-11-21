@@ -4,3 +4,10 @@ export const setInfosSetting = (item:any) => {
         payload: item,
     };
 };
+
+export const setJwt = (item:String) => {
+    return {
+        type: 'SET_JWT',
+        payload: item,
+    }
+}
