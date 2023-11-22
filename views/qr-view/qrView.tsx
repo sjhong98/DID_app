@@ -31,9 +31,8 @@ export default function QrView(): JSX.Element {
     useEffect(() => {   // infos 업뎃 뒤에 axios
         dispatch(setInfosSetting(infos));
 
-        axios.post("https://api.dmrs.space:5003/qr/link", {jwt:"다음 테스트"})
+        axios.post("https://api.dmrs.space:5003/link/generate", {jwt:"다음 테스트"})
         .then(res => {
-            console.log(res.data.link);
             setQr(res.data.link);
         })
         .catch(err => {

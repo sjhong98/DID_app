@@ -11,7 +11,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../App';
 import { setJwt } from '../../redux/actions';
 
-
 export default function Lobby(): JSX.Element {
     const [name, setName] = useState("");
     const [bir, setBir] = useState("");
