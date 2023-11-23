@@ -40,22 +40,32 @@ export default function Lobby(): JSX.Element {
         .then(res => {
             setDid(res);
         })
+
+        axios.post('https://api.dmrs.space:5001/user/update', {
+            patientDID: did
+        })
+        .then(res => {
+            console.log("\n\n===== UPDATED =====\n", res.data);
+        })
+        .catch(err => {
+            console.log("\n\n===== UPDATE ERROR =====\n", err);
+        })
     }, [])
 
     useEffect(() => {
         let temp = [...vcs];
-        console.log("===== issue/vc =====");
         for(let i=0; i<infos.length; i++) {
             AsyncStorage.getItem(`${infos[i].store}`)
             .then(res => {
                 if(JSON.parse(res)){
                     console.log(infos[i].title)
+                    // 각 병원 별  vc 받아오기
                     axios.post('https://api.dmrs.space:5001/user/issue/vc', {
                         did: did,  
                         hospital: `${infos[i].title}`
                     })
                     .then(res => {
-                        console.log(res);
+                        console.log("\n\n===== issue/vc =====\n", res.data);
                         temp.push(res.data);     // 수정 필요
                     })
                     .catch(err => {
@@ -68,12 +78,11 @@ export default function Lobby(): JSX.Element {
     }, [infos, did])
 
     useEffect(() => {
-        console.log("===== issue/vp =====", vcs);
         axios.post('https://api.dmrs.space:5001/user/issue/vp', {
             vcJwts: vcs
         })
         .then(res => {
-            console.log(res);
+            console.log("\n\n===== issue/vp =====\n", res.data);
             dispatch(setJwt(res.data));  // 수정 필요
         })
     }, [vcs]);
