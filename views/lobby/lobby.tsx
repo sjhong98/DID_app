@@ -102,7 +102,7 @@ export default function Lobby(): JSX.Element {
                         
                             <View style={styles.cardTextContainer}>
                                 <Text style={styles.cardText1}>이름</Text>
-                                <Text style={styles.cardText2}>{name}</Text>
+                                <Text style={styles.cardText2}>홍승재</Text>
                                 <Text style={styles.cardText1}>출생일</Text>
                                 <Text style={styles.cardText2}>{bir}</Text>
                             </View>

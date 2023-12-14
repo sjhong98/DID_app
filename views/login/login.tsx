@@ -56,9 +56,9 @@ export default function Login(): JSX.Element {
                     // AsyncStorage.setItem("login", "true");
                     // AsyncStorage.setItem("name", res.data.dbData.name);
                     // AsyncStorage.setItem("birthday", res.data.dbData.birthday);
-                    AsyncStorage.setItem("email", "test@test.com"); 
-                    AsyncStorage.setItem("login", "true");
-                    AsyncStorage.setItem("name", "test");
+                    AsyncStorage.setItem("email", "sjhong98@icloud.com"); 
+                    AsyncStorage.setItem("login", "홍승재");
+                    AsyncStorage.setItem("name", "홍승재");
                     AsyncStorage.setItem("birthday", "980901");
                     AsyncStorage.setItem("did", res.data.dbData.did);
                     navigation.navigate('MainScreen', { screen: 'Lobby' });
